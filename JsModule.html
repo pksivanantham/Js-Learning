@@ -1,0 +1,32 @@
+<html>
+<head>
+<script type="text/javascript" src='JsGoodParts.js'></script>
+</head>
+<body>
+	<h1>JS Modules</h1>
+	<script type="text/javascript">
+	var randomGenObject=serial_maker();		
+		randomGenObject.set_sequenceNumber(0);
+		randomGenObject.set_prefix('JSGP');
+		document.writeln( randomGenObject.generateSequenceNumber());
+		document.writeln( randomGenObject.generateSequenceNumber());
+		document.writeln( randomGenObject.generateSequenceNumber());
+		document.writeln( randomGenObject.generateSequenceNumber());
+		document.writeln( randomGenObject.generateSequenceNumber());
+		//testArguments();
+		var addNum=add.curry(1,2);
+//		console.log(addNum);
+		var addAdditional=addNum(3);
+//		console.log(addAdditional)
+var fib=fibinacci_withMemo();
+
+for (var i = 0; i <= 10; i++) {
+	console.log('calling for ---------'+i +'---Starts')
+console.log('<----Result for '+i+'='+fibinacci(i));
+
+}
+document.writeln('\n'+numberofCounts)
+
+	</script>
+</body>
+</html>
