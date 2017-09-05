@@ -1,0 +1,87 @@
+<html>
+    <!-- <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-2.1.0.js"></script> -->
+    <script src="http://knockoutjs.com/downloads/knockout-latest.js"></script>
+    <body>
+            <table>
+                    <thead>
+                        <tr>
+                            <th><!--Row Number--></th>
+                            <th>Serial No.</th>
+                            <th>Name</th>
+                            <th><!--Delete Button--></th>
+                        </tr>
+                    </thead>
+                  <!-- <input type='text' data-bind="hasFocus: isSelected" />
+                  <button data-bind="click: setIsSelected">Focus programmatically</button>
+                  <span data-bind="visible: isSelected">The textbox has focus</span> -->
+                    <tbody data-bind="foreach:{data:filteredDevices} ">
+                        <tr>
+                      <td data-bind="text:$parent.filteredDevices().length">
+                      <td data-bind="text:$index()+1">
+                            <!-- hasFocus:$parent.filteredDevices().length == $index() +1,keypress: $parent.checkValue, -->
+                            <td><input data-bind="hasfocus:$parent.isSelected(),value: serial, event: { change: ($parent.filteredDevices().length == $index() + 1) ? $parent.addDevice : '' }" /></td>
+                            <td><input data-bind="value: name, event: { change: ($parent.filteredDevices().length == $index() + 1) ? $parent.addDevice : '' }" /></td>
+                            <td><button type="button" data-bind="visible: $parent.filteredDevices().length != $index() + 1, click: $parent.deleteDevice">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <script type="text/javascript">
+
+                // View Model
+
+var DevicesViewModel = function () {
+    var self = this;
+    self.isSelected= ko.observable(false);
+    self.setIsSelected= function() { self.isSelected(true) };
+
+    self.isSelected.subscribe(function(newValue) {
+  // alert(newValue);
+});
+self.checkValue=function(data, event) {
+    console.log('keyup called');
+    console.log(event)
+    var code = event.keyCode || event.which;
+    if (code == '9') {
+        alert('Tab pressed 1'); 
+        setTimeout(function() {
+            alert('Tab pressed'); 
+            return true;
+        }, 0);
+       
+       
+    
+    }
+};
+
+    self.devices = ko.observableArray([{ name: 'test', serial: 'test' }]);//.extend({ rateLimit: 500 });
+
+    self.addDevice = function (data) {
+        
+        self.devices.push({ name: data.name, serial: data.serial });
+        self.setIsSelected();
+        
+    };
+
+    self.deleteDevice = function (device) {
+        self.devices.remove(device);
+    };
+
+    
+
+    self.filteredDevices = ko.computed(function () {
+        var arr = ko.utils.arrayFilter(self.devices(), function (device) {
+            return true;
+        });
+		
+        arr.push({ name: null, serial: null });
+
+        return arr;
+    });
+};
+
+ko.applyBindings(new DevicesViewModel());
+                </script>
+    </body>
+</html>   
+
