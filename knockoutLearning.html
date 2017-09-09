@@ -1,0 +1,70 @@
+<html>
+
+<script src="http://knockoutjs.com/downloads/knockout-latest.js"></script>
+
+<body>
+    <p>First name: <input data-bind="value: firstName,disable:true" /></p>
+    <p>Last name: <input data-bind="value: lastName,disable:true" /></p>
+    <h2>Hello, <input data-bind="textInput: fullNameWithReadAndWriteAccess"> </input>!</h2>
+
+
+    <script type="text/javascript">
+        // Here's my data model
+        var ViewModel = function (first, last) {
+            this.firstName = ko.observable(first);
+            this.lastName = ko.observable(last);
+
+            this.fullName = ko.pureComputed(function () {
+
+                return this.firstName() + " " + this.lastName();
+            }, this).extend({ notify: 'always', rateLimit: 50 });
+
+            var fullNameSubscribers = () => { };
+
+            this.fullName.subscribe((data) => {
+
+                //   console.log(JSON.stringify(data))
+
+
+            });
+
+            this.fullNameWithReadAndWriteAccess = ko.pureComputed({
+                read: () => {
+                    console.log(this);
+                    return this.firstName() + " " + this.lastName();
+                },
+                write: (value) => {
+                    var lastSpacePos = value.lastIndexOf(" ");
+                    if (lastSpacePos > 0) { // Ignore values with no space character
+                        this.firstName(value.substring(0, lastSpacePos)); // Update "firstName"
+                        this.lastName(value.substring(lastSpacePos + 1)); // Update "lastName"
+                    }
+                },
+                owner: this
+
+            });
+
+        };
+
+        var viewModel = new ViewModel("Planet", "Earth");
+
+        ko.applyBindings(viewModel); // This makes Knockout get to work
+
+
+        //Checking the propert's of viewmodel is valid or not
+        viewModelValiator = ((param) => {
+            console.log(param);
+            for (var prop in viewModel) {
+                console.log(prop);
+                if (viewModel.hasOwnProperty(prop) && !ko.isComputed(viewModel[prop])) {
+                    console.log('is not computed');
+                }
+                else {
+                    console.log('is computed');
+                }
+            };
+        })([{ 'name': 'Siva' }]);
+    </script>
+</body>
+
+</html>
